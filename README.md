@@ -1,1 +1,2 @@
-# Orbit simulator
+# stellar-evolution-simulator
+
