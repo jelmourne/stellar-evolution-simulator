@@ -1,5 +1,11 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import {
+  BloomEffect,
+  EffectComposer,
+  EffectPass,
+  RenderPass,
+} from "postprocessing";
 import { getSunTexture } from "./helpers";
 
 const scene = new THREE.Scene();
@@ -26,15 +32,22 @@ scene.add(light);
 
 camera.position.z = 10;
 
+// Render scene
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setClearColor(0x000000, 1);
 renderer.setSize(window.innerWidth, window.innerHeight);
-
 document.body.appendChild(renderer.domElement);
 
+// Adds filter to image
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(new EffectPass(camera, new BloomEffect()));
+
+// Animate star
 function animate() {
   requestAnimationFrame(animate);
 
+  composer.render();
   renderer.render(scene, camera);
   sphere.rotation.y += 0.002;
 }
