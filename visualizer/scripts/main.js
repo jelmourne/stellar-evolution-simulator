@@ -1,15 +1,14 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import {
   BloomEffect,
   EffectComposer,
   EffectPass,
   RenderPass,
-} from "postprocessing";
-import { getSunTexture } from "./helpers";
+} from 'postprocessing';
+import { getSunTexture } from './helpers';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -19,7 +18,7 @@ const camera = new THREE.PerspectiveCamera(
   40
 );
 
-var bgTexture = new THREE.TextureLoader().load("/2k_stars.jpg");
+var bgTexture = new THREE.TextureLoader().load('/2k_stars.jpg');
 bgTexture.minFilter = THREE.LinearFilter;
 scene.setClearColor = new THREE.Color(0, 0, 0);
 scene.background = bgTexture;
@@ -49,15 +48,15 @@ composer.addPass(new EffectPass(camera, new BloomEffect()));
 // Animate star
 function animate() {
   requestAnimationFrame(animate);
-  
-// Creating renderer to place labels and the legend
+
+  // Creating renderer to place labels and the legend
   const labelRenderer = new CSS2DRenderer();
   labelRenderer.setSize(window.innerWidth, window.innerHeight);
   labelRenderer.domElement.style.position = 'absolute';
   labelRenderer.domElement.style.top = '0px';
   labelRenderer.domElement.style.pointerEvents = 'none'; // Ignoring mouse events so orbit controls still work
   document.body.appendChild(labelRenderer.domElement);
-  
+
   composer.render();
   renderer.render(scene, camera);
   labelRenderer.render(scene, camera);
