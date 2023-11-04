@@ -45,30 +45,31 @@ const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 composer.addPass(new EffectPass(camera, new BloomEffect()));
 
+// Creating renderer to place labels and the legend
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.top = '0px';
+labelRenderer.domElement.style.pointerEvents = 'none'; // Ignoring mouse events so orbit controls still work
+document.body.appendChild(labelRenderer.domElement);
+
 // Animate star
 function animate() {
   requestAnimationFrame(animate);
 
   // Creating renderer to place labels and the legend
-  const labelRenderer = new CSS2DRenderer();
-  labelRenderer.setSize(window.innerWidth, window.innerHeight);
-  labelRenderer.domElement.style.position = 'absolute';
-  labelRenderer.domElement.style.top = '0px';
-  labelRenderer.domElement.style.pointerEvents = 'none'; // Ignoring mouse events so orbit controls still work
-  document.body.appendChild(labelRenderer.domElement);
-
   composer.render();
   renderer.render(scene, camera);
   labelRenderer.render(scene, camera);
   sphere.rotation.y += 0.002;
 }
 
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  labelRenderer.setSize(this.window.innerWidth, this.window.innerHeight);
-});
+// window.addEventListener('resize', () => {
+//   camera.aspect = window.innerWidth / window.innerHeight;
+//   camera.updateProjectionMatrix();
+//   renderer.setSize(window.innerWidth, window.innerHeight);
+//   labelRenderer.setSize(this.window.innerWidth, this.window.innerHeight);
+// });
 
 animate();
 
