@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import * as THREE from "three";
 
 function getSunTexture() {
@@ -6,15 +6,11 @@ function getSunTexture() {
   const texture = loader.load("/2k_sun.jpg");
 
   const material = new THREE.MeshBasicMaterial({
-    alphaMap: texture,
+    map: texture,
 
     // adjust color of sun based on temp
-    color: "#FFA500",
+    color: "#0030ff",
   });
-
-  //adjust for sun stage
-  material.alphaTest = 0.5;
-
   return material;
 }
 
