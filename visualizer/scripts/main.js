@@ -1,3 +1,6 @@
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { getSunTexture } from "./helpers";
@@ -20,7 +23,7 @@ const material = getSunTexture();
 const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
 
-const light = new THREE.PointLight("#ffffff", 1, 100);
+const light = new THREE.PointLight('#ffffff', 1, 100);
 light.position.set(0, 10, 10);
 scene.add(light);
 
@@ -32,12 +35,28 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
 
+// Creating renderer to place labels and the legend
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.setSize(window.innerWidth, window.innerHeight);
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.top = '0px';
+labelRenderer.domElement.style.pointerEvents = 'none'; // Ignoring mouse events so orbit controls still work
+document.body.appendChild(labelRenderer.domElement);
+
 function animate() {
   requestAnimationFrame(animate);
-
   renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+  sphere.rotation.x += 0.01;
   sphere.rotation.y += 0.002;
 }
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  labelRenderer.setSize(this.window.innerWidth, this.window.innerHeight);
+});
 
 animate();
 

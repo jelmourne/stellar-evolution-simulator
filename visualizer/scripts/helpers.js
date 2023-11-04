@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as THREE from "three";
 
 function getSunTexture() {
