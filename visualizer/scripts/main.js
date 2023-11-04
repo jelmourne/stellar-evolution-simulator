@@ -1,14 +1,9 @@
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import {
-  BloomEffect,
-  EffectComposer,
-  EffectPass,
-  RenderPass,
-} from 'postprocessing';
-import { getSunTexture } from './helpers';
+import * as THREE from "three";
+import { CSS2DRenderer } from "three/examples/jsm/renderers/CSS2DRenderer";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { getSunTexture } from "./helpers";
+import * as fs from "fs";
+import * as d3 from "d3";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -18,7 +13,19 @@ const camera = new THREE.PerspectiveCamera(
   40
 );
 
-var bgTexture = new THREE.TextureLoader().load('/2k_stars.jpg');
+fs.readFile("../../data.csv", "utf8", (error, data) => {
+  const newData = d3.csvParse(data);
+  var i = 0;
+  const interval = setInterval(() => {
+    if (!(i <= newData.length - 100)) {
+      clearInterval(interval);
+    }
+    console.log(newData[i][0]);
+    i += 100;
+  }, 200);
+});
+
+var bgTexture = new THREE.TextureLoader().load("/2k_stars.jpg");
 bgTexture.minFilter = THREE.LinearFilter;
 scene.setClearColor = new THREE.Color(0, 0, 0);
 scene.background = bgTexture;
@@ -28,7 +35,7 @@ const material = getSunTexture();
 const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
 
-const light = new THREE.PointLight('#ffffff', 1, 100);
+const light = new THREE.PointLight("#ffffff", 1, 100);
 light.position.set(0, 10, 10);
 scene.add(light);
 
@@ -48,9 +55,9 @@ composer.addPass(new EffectPass(camera, new BloomEffect()));
 // Creating renderer to place labels and the legend
 const labelRenderer = new CSS2DRenderer();
 labelRenderer.setSize(window.innerWidth, window.innerHeight);
-labelRenderer.domElement.style.position = 'absolute';
-labelRenderer.domElement.style.top = '0px';
-labelRenderer.domElement.style.pointerEvents = 'none'; // Ignoring mouse events so orbit controls still work
+labelRenderer.domElement.style.position = "absolute";
+labelRenderer.domElement.style.top = "0px";
+labelRenderer.domElement.style.pointerEvents = "none"; // Ignoring mouse events so orbit controls still work
 document.body.appendChild(labelRenderer.domElement);
 
 // Animate star
