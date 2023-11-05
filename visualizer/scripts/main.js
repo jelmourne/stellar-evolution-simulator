@@ -4,10 +4,10 @@ import {
   CSS2DRenderer,
   CSS2DObject,
 } from 'three/examples/jsm/renderers/CSS2DRenderer';
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { EffectComposer } from '/node_modules/three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from '/node_modules/three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from '/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import json from '../../file.json' assert { type: 'json' };
 
 let timestepsArr = [];
@@ -29,11 +29,10 @@ for (let i = 0; i < length; i++) {
   starTimestep.star_mdot = json.star_mdot[i];
   timestepsArr.push(starTimestep);
 }
-console.log(timestepsArr);
 let scene;
 let camera;
 let renderer;
-const canvas = document.getElementsByTagName("canvas")[0];
+const canvas = document.getElementsByTagName('canvas')[0];
 scene = new THREE.Scene();
 const fov = 60;
 const aspect = window.innerWidth / window.innerHeight;
@@ -75,10 +74,10 @@ bloomComposer.addPass(renderScene);
 bloomComposer.addPass(bloomPass);
 
 //sun object
-const color = new THREE.Color("#FDB813");
+const color = new THREE.Color('#FDB813');
 const geometry = new THREE.IcosahedronGeometry(1, 15);
 const material = new THREE.MeshBasicMaterial({
-  map: loader.load("/2k_sun.jpg"),
+  map: loader.load('/2k_sun.jpg'),
   color: color,
 });
 const sphere = new THREE.Mesh(geometry, material);
@@ -91,7 +90,7 @@ const starGeometry = new THREE.SphereGeometry(80, 64, 64);
 
 // galaxy material
 const starMaterial = new THREE.MeshBasicMaterial({
-  map: loader.load("/galaxy1.png"),
+  map: loader.load('/galaxy1.png'),
   side: THREE.BackSide,
   transparent: true,
 });
@@ -107,7 +106,7 @@ scene.add(ambientlight);
 
 //resize listner
 window.addEventListener(
-  "resize",
+  'resize',
   () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
