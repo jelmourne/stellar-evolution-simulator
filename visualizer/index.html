@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stellar Evolution</title>
     <link href="./style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <div id="app"></div>
@@ -21,6 +28,20 @@
         <li id="model">Model:</li>
         <!-- <li><sup>1</sup>H Mass Fraction:</li> -->
       </ul>
+      <div id="actions">
+        <button id="play" style="display: flex; align-items: center">
+          <i class="fa-solid fa-play" id="togglePlay"></i>
+        </button>
+        <div>
+          <input
+            type="range"
+            max="140"
+            value="0"
+            style="width: 250px"
+            id="slider"
+          />
+        </div>
+      </div>
     </div>
     <script type="module" src="./scripts/main.js"></script>
     <div></div>

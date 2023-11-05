@@ -1,60 +1,83 @@
-import * as THREE from 'three';
-import '../style.css';
+import * as THREE from "three";
+import "../style.css";
 import {
   CSS2DRenderer,
   CSS2DObject,
-} from 'three/examples/jsm/renderers/CSS2DRenderer';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { EffectComposer } from '/node_modules/three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from '/node_modules/three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from '/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import json from '../../file.json' assert { type: 'json' };
+} from "three/examples/jsm/renderers/CSS2DRenderer";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import json from "../../file.json" assert { type: "json" };
 
-const legend = document.getElementById('legend');
+const legend = document.getElementById("legend");
+
+// playback
+var interval;
+var flag = false;
+var i = 0;
 
 function playEvolution() {
-  var i = 0;
-  const interval = setInterval(() => {
+  interval = setInterval(() => {
     if (i >= timestepsArr.length) {
       clearInterval(interval);
     }
-    legend.children[0].innerHTML = 'Age (yr): ' + timestepsArr[i].star_age;
+    slider.value = i;
+    legend.children[0].innerHTML = "Age (yr): " + timestepsArr[i].star_age;
     legend.children[1].innerHTML =
-      'Mass (M<sub>☉</sub>): ' + timestepsArr[i].star_mass;
+      "Mass (M<sub>☉</sub>): " + timestepsArr[i].star_mass;
     legend.children[2].innerHTML =
-      'Luminosity (log<sub>10</sub>L<sub>☉</sub>): ' + timestepsArr[i].log_L;
+      "Luminosity (log<sub>10</sub>L<sub>☉</sub>): " + timestepsArr[i].log_L;
     legend.children[3].innerHTML =
-      'Radius (log<sub>10</sub>R<sub>☉</sub>): ' + timestepsArr[i].log_R;
+      "Radius (log<sub>10</sub>R<sub>☉</sub>): " + timestepsArr[i].log_R;
     legend.children[4].innerHTML =
-      'Eff. Temp. (K) (log<sub>10</sub>T<sub>eff</sub>): ' +
+      "Eff. Temp. (K) (log<sub>10</sub>T<sub>eff</sub>): " +
       timestepsArr[i].log_Teff;
     legend.children[5].innerHTML =
-      'Density (g cm<sup>-3</sup>) (log<sub>10</sub>ρ<sub>c</sub>): ' +
+      "Density (g cm<sup>-3</sup>) (log<sub>10</sub>ρ<sub>c</sub>): " +
       timestepsArr[i].log_center_Rho;
     legend.children[6].innerHTML =
-      'Pressure (dyn cm<sup>-2</sup>) (log<sub>10</sub>P<sub>c</sub>): ' +
+      "Pressure (dyn cm<sup>-2</sup>) (log<sub>10</sub>P<sub>c</sub>): " +
       timestepsArr[i].log_center_P;
-    legend.children[7].innerHTML = 'Model: ' + timestepsArr[i].model_number;
+    legend.children[7].innerHTML = "Model: " + timestepsArr[i].model_number;
     // legend.children[7].innerHTML =
     //   '<sup>1</sup>H Mass Fraction: ' + timestepsArr[i].center_h1;
     i++;
   }, 150);
 }
 
-playEvolution();
+const slider = document.getElementById("slider");
+slider.addEventListener("change", () => {
+  i = slider.value;
+});
+
+const playButton = document.getElementById("togglePlay");
+document.getElementById("play").addEventListener("click", () => {
+  if (!flag) {
+    flag = true;
+    playButton.classList.remove("fa-play");
+    playButton.classList.add("fa-pause");
+    playEvolution();
+  } else {
+    clearInterval(interval);
+    flag = false;
+    playButton.classList.remove("fa-pause");
+    playButton.classList.add("fa-play");
+  }
+});
 
 let scene;
 let camera;
 let renderer;
-const canvas = document.getElementsByTagName('canvas')[0];
+const canvas = document.getElementsByTagName("canvas")[0];
 scene = new THREE.Scene();
 const fov = 55;
 const aspect = window.innerWidth / window.innerHeight;
 const near = 0.1;
 const far = 1000;
 const loader = new THREE.TextureLoader();
-var color = '#FDB813';
-const luminosity = document.getElementById('luminosity');
+var color = "#FDB813";
+const luminosity = document.getElementById("luminosity");
 var options = {
   childList: true,
 };
@@ -62,9 +85,9 @@ var options = {
 let observer = new MutationObserver(luminosityChange);
 
 function luminosityChange() {
-  let radius = document.getElementById('radius').innerHTML.slice(40);
-  let luminosity = document.getElementById('luminosity').innerHTML.slice(44);
-  let model = document.getElementById('model').innerHTML.slice(7);
+  let radius = document.getElementById("radius").innerHTML.slice(40);
+  let luminosity = document.getElementById("luminosity").innerHTML.slice(44);
+  let model = document.getElementById("model").innerHTML.slice(7);
 
   if (model > 1200 && model < 10000) {
     bloomPass.strength = luminosity / 4;
@@ -75,7 +98,7 @@ function luminosityChange() {
 
   if (model > 13400) {
     camera.position.z = 15;
-    material.color = new THREE.Color('#739aff');
+    material.color = new THREE.Color("#739aff");
     bloomPass.strength = 2;
   }
 }
@@ -119,7 +142,7 @@ bloomComposer.addPass(bloomPass);
 const colorElem = new THREE.Color(color); // change color based on tempurature
 const geometry = new THREE.IcosahedronGeometry(1, 15);
 const material = new THREE.MeshBasicMaterial({
-  map: loader.load('/2k_sun.jpg'),
+  map: loader.load("/2k_sun.jpg"),
   color: colorElem,
 });
 const sphere = new THREE.Mesh(geometry, material);
@@ -132,7 +155,7 @@ const starGeometry = new THREE.SphereGeometry(80, 64, 64);
 
 // galaxy material
 const starMaterial = new THREE.MeshBasicMaterial({
-  map: loader.load('/galaxy1.png'),
+  map: loader.load("/galaxy1.png"),
   side: THREE.BackSide,
   transparent: true,
 });
@@ -148,7 +171,7 @@ scene.add(ambientlight);
 
 //resize listner
 window.addEventListener(
-  'resize',
+  "resize",
   () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();

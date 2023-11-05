@@ -7,6 +7,27 @@ body {
   position: absolute;
 }
 
+#actions {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  height: 20px;
+}
+
+#play {
+  align-items: center;
+  display: flex;
+  border: none;
+  background: none;
+  padding: 12px;
+}
+
+#play > i {
+  color: white;
+  font-size: 20px;
+}
+
 ul {
   border: 1px solid white;
   list-style-type: none;
@@ -25,4 +46,11 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  height: 2.5px;
 }
