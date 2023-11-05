@@ -8,7 +8,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import json from "../../file.json" assert { type: "json" }
+import json from "../../file.json" assert { type: "json" };
 
 const legend = document.getElementById("legend");
 
@@ -37,31 +37,29 @@ playEvolution();
 let scene;
 let camera;
 let renderer;
-const canvas = document.getElementsByTagName('canvas')[0];
+const canvas = document.getElementsByTagName("canvas")[0];
 scene = new THREE.Scene();
 const fov = 55;
 const aspect = window.innerWidth / window.innerHeight;
 const near = 0.1;
 const far = 1000;
 const loader = new THREE.TextureLoader();
-var position = 8;
+var position = 3;
+var color = "#FDB813";
+const luminosity = document.getElementById("luminosity");
 var options = {
   childList: true,
 };
 
 let observer = new MutationObserver(luminosityChange);
 
-function luminosityChange() {
-  console.log("dsa");
-}
-
-const luminosity = document.getElementById("luminosity");
+function luminosityChange() {}
 
 observer.observe(luminosity, options);
 
 //camera
 camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.z = position; // modifies size of sun
+camera.position.z = 9; // modifies size of sun
 camera.position.x = 0;
 scene.add(camera);
 
@@ -93,11 +91,11 @@ bloomComposer.addPass(renderScene);
 bloomComposer.addPass(bloomPass);
 
 //sun object
-const color = new THREE.Color("#FDB813"); // change color based on tempurature
+const colorElem = new THREE.Color(color); // change color based on tempurature
 const geometry = new THREE.IcosahedronGeometry(1, 15);
 const material = new THREE.MeshBasicMaterial({
-  map: loader.load('/2k_sun.jpg'),
-  color: color,
+  map: loader.load("/2k_sun.jpg"),
+  color: colorElem,
 });
 const sphere = new THREE.Mesh(geometry, material);
 sphere.position.set(0, 0, 0);
@@ -109,7 +107,7 @@ const starGeometry = new THREE.SphereGeometry(80, 64, 64);
 
 // galaxy material
 const starMaterial = new THREE.MeshBasicMaterial({
-  map: loader.load('/galaxy1.png'),
+  map: loader.load("/galaxy1.png"),
   side: THREE.BackSide,
   transparent: true,
 });
@@ -125,7 +123,7 @@ scene.add(ambientlight);
 
 //resize listner
 window.addEventListener(
-  'resize',
+  "resize",
   () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
