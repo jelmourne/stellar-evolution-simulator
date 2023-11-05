@@ -8,7 +8,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import json from "../../file.json" assert { type: "json" };
+import json from "../../file.json" assert { type: "json" }
 
 const legend = document.getElementById("legend");
 
@@ -37,7 +37,7 @@ playEvolution();
 let scene;
 let camera;
 let renderer;
-const canvas = document.getElementsByTagName("canvas")[0];
+const canvas = document.getElementsByTagName('canvas')[0];
 scene = new THREE.Scene();
 const fov = 55;
 const aspect = window.innerWidth / window.innerHeight;
@@ -82,7 +82,7 @@ bloomComposer.addPass(bloomPass);
 const color = new THREE.Color("#FDB813"); // change color based on tempurature
 const geometry = new THREE.IcosahedronGeometry(1, 15);
 const material = new THREE.MeshBasicMaterial({
-  map: loader.load("/2k_sun.jpg"),
+  map: loader.load('/2k_sun.jpg'),
   color: color,
 });
 const sphere = new THREE.Mesh(geometry, material);
@@ -95,7 +95,7 @@ const starGeometry = new THREE.SphereGeometry(80, 64, 64);
 
 // galaxy material
 const starMaterial = new THREE.MeshBasicMaterial({
-  map: loader.load("/galaxy1.png"),
+  map: loader.load('/galaxy1.png'),
   side: THREE.BackSide,
   transparent: true,
 });
@@ -111,7 +111,7 @@ scene.add(ambientlight);
 
 //resize listner
 window.addEventListener(
-  "resize",
+  'resize',
   () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
