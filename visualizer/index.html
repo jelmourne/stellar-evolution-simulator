@@ -12,6 +12,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <script src="plotly-2.27.0.min.js" charset="utf-8"></script>
   </head>
   <body>
     <div id="app"></div>
@@ -26,6 +27,7 @@
         <li>Density (g cm<sup>-3</sup>) (log<sub>10</sub>ρ<sub>c</sub>):</li>
         <li>Pressure (dyn cm<sup>-2</sup>) (log<sub>10</sub>P<sub>c</sub>):</li>
         <li id="model">Model:</li>
+        <div id="plot"></div>
         <!-- <li><sup>1</sup>H Mass Fraction:</li> -->
       </ul>
       <div id="actions">
@@ -35,9 +37,9 @@
         <div>
           <input
             type="range"
-            max="140"
-            value="0"
+            value="1"
             style="width: 250px"
+            max="140"
             id="slider"
           />
         </div>
