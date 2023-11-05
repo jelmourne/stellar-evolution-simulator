@@ -17,6 +17,7 @@ function playEvolution() {
   interval = setInterval(() => {
     if (i >= timestepsArr.length) {
       clearInterval(interval);
+      location.reload();
     }
     slider.value = i;
     legend.children[0].innerHTML = "Age (yr): " + timestepsArr[i].star_age;
@@ -96,10 +97,12 @@ function luminosityChange() {
   }
   camera.position.z = 9 / radius;
 
-  if (model > 13400) {
+  if (model > 13000) {
     camera.position.z = 15;
+
     material.color = new THREE.Color("#739aff");
-    bloomPass.strength = 2;
+    material.map = loader.load("/white.jpg");
+    bloomPass.strength = 1;
   }
 }
 
