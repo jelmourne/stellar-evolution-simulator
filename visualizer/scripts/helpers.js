@@ -16,16 +16,19 @@ function getSunTexture() {
   return material;
 }
 
-fs.readFile("../../data.csv", "utf8", (error, data) => {
-  const newData = d3.csvParse(data);
-  var i = 0;
-  const interval = setInterval(() => {
-    if (!(i <= newData.length - 100)) {
-      clearInterval(interval);
-    }
-    console.log(newData[i]);
-    i += 20;
-  }, 20);
-});
+function getData() {
+  fs.readFile("../../data.csv", "utf8", (error, data) => {
+    const newData = d3.csvParse(data);
+    var i = 0;
+    const interval = setInterval(() => {
+      if (!(i <= newData.length - 100)) {
+        clearInterval(interval);
+      }
+      console.log(newData[i]);
+      i += 20;
+    }, 20);
+  });
+}
 
+getData();
 export { getSunTexture };
