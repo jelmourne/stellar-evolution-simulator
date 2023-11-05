@@ -1,17 +1,17 @@
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import * as THREE from "three";
+import "../style.css";
 import {
   CSS2DRenderer,
   CSS2DObject,
-} from 'three/examples/jsm/renderers/CSS2DRenderer';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+} from "three/examples/jsm/renderers/CSS2DRenderer";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import {
   BloomEffect,
   EffectComposer,
   EffectPass,
   RenderPass,
-} from 'postprocessing';
-import { getSunTexture } from './helpers';
+} from "postprocessing";
+import { getSunTexture } from "./helpers";
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -71,10 +71,10 @@ function animate() {
 animate();
 
 // Creating HTML element
-const propertiesDiv = document.createElement('div');
-propertiesDiv.style.border = '2px solid #fff';
-propertiesDiv.style.width = '300px;';
-propertiesDiv.style.padding = '20px';
+const propertiesDiv = document.createElement("div");
+propertiesDiv.style.border = "2px solid #fff";
+propertiesDiv.style.width = "300px;";
+propertiesDiv.style.padding = "20px";
 propertiesDiv.innerHTML = `<ul style="list-style-type:none;color:#fff; padding:0; margin:0; line-height:1.5">
     <li>Age:</li>
     <li>Solar Mass:</li>

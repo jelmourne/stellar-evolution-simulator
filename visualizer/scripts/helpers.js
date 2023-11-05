@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import * as THREE from "three";
 import * as fs from "fs";
 import * as d3 from "d3";
@@ -11,7 +12,7 @@ function getSunTexture() {
     map: texture,
 
     // adjust color of sun based on temp
-    color: "#0030ff",
+    color: "#ffffff",
   });
   return material;
 }
@@ -30,5 +31,4 @@ function getData() {
   });
 }
 
-getData();
 export { getSunTexture };
