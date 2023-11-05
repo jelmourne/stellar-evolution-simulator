@@ -1,9 +1,5 @@
 import * as THREE from "three";
 import "../style.css";
-import {
-  CSS2DRenderer,
-  CSS2DObject,
-} from "three/examples/jsm/renderers/CSS2DRenderer";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
@@ -21,6 +17,7 @@ function playEvolution() {
   interval = setInterval(() => {
     if (i >= timestepsArr.length) {
       clearInterval(interval);
+      location.reload();
     }
     slider.value = i;
     legend.children[0].innerHTML = "Age (yr): " + timestepsArr[i].star_age;
@@ -47,8 +44,12 @@ function playEvolution() {
 }
 
 const slider = document.getElementById("slider");
+slider.addEventListener("mousedown", () => {
+  clearInterval(interval);
+});
 slider.addEventListener("change", () => {
   i = slider.value;
+  playEvolution();
 });
 
 const playButton = document.getElementById("togglePlay");
@@ -96,10 +97,12 @@ function luminosityChange() {
   }
   camera.position.z = 9 / radius;
 
-  if (model > 13400) {
+  if (model > 13000) {
     camera.position.z = 15;
+
     material.color = new THREE.Color("#739aff");
-    bloomPass.strength = 2;
+    material.map = loader.load("/white.jpg");
+    bloomPass.strength = 1;
   }
 }
 
@@ -212,4 +215,3 @@ for (let i = 0; i < length; i += 100) {
   starTimestep.star_mdot = json.star_mdot[i];
   timestepsArr.push(starTimestep);
 }
-console.log(timestepsArr.length);
