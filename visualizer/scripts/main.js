@@ -15,7 +15,7 @@ const legend = document.getElementById("legend");
 function playEvolution() {
   var i = 0;
   const interval = setInterval(() => {
-    if (!(i <= timestepsArr.length - 100)) {
+    if (!(i <= timestepsArr.length)) {
       clearInterval(interval);
     }
     legend.children[0].innerHTML = "Age: " + timestepsArr[i].star_age;
@@ -28,7 +28,7 @@ function playEvolution() {
     legend.children[6].innerHTML = "Pressure: " + timestepsArr[i].log_center_P;
     legend.children[7].innerHTML =
       "Fraction Hydrogen: " + timestepsArr[i].center_h1;
-    i += 200;
+    i++;
   }, 500);
 }
 
@@ -136,7 +136,7 @@ animate();
 let timestepsArr = [];
 let length = Object.keys(json.model_number).length;
 
-for (let i = 0; i < length; i++) {
+for (let i = 0; i < length; i += 100) {
   let starTimestep = {};
   starTimestep.center_h1 = json.center_h1[i];
   starTimestep.center_he3 = json.center_he3[i];
@@ -152,3 +152,4 @@ for (let i = 0; i < length; i++) {
   starTimestep.star_mdot = json.star_mdot[i];
   timestepsArr.push(starTimestep);
 }
+console.log(timestepsArr.length);
