@@ -1,3 +1,28 @@
-html {
+body {
   margin: 0;
+  overflow: hidden;
+}
+
+#overlay {
+  position: absolute;
+}
+
+ul {
+  border: 1px solid white;
+  list-style-type: none;
+  color: #fff;
+  padding: 10px;
+  margin: 20px;
+  line-height: 1.5;
+  width: 250px;
+}
+
+canvas {
+  z-index: -9999;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
