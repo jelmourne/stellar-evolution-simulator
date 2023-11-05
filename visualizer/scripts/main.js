@@ -1,16 +1,16 @@
-import * as THREE from "three";
-import "../style.css";
+import * as THREE from 'three';
+import '../style.css';
 import {
   CSS2DRenderer,
   CSS2DObject,
-} from "three/examples/jsm/renderers/CSS2DRenderer";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import json from "../../file.json" assert { type: "json" }
+} from 'three/examples/jsm/renderers/CSS2DRenderer';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { EffectComposer } from '/node_modules/three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from '/node_modules/three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from '/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import json from '../../file.json' assert { type: 'json' };
 
-const legend = document.getElementById("legend");
+const legend = document.getElementById('legend');
 
 function playEvolution() {
   var i = 0;
@@ -18,16 +18,16 @@ function playEvolution() {
     if (!(i <= timestepsArr.length)) {
       clearInterval(interval);
     }
-    legend.children[0].innerHTML = "Age: " + timestepsArr[i].star_age;
-    legend.children[1].innerHTML = "Solar Mass: " + timestepsArr[i].star_mass;
-    legend.children[2].innerHTML = "Luminosity: " + timestepsArr[i].log_L;
-    legend.children[3].innerHTML = "Radius: " + timestepsArr[i].log_R;
+    legend.children[0].innerHTML = 'Age: ' + timestepsArr[i].star_age;
+    legend.children[1].innerHTML = 'Solar Mass: ' + timestepsArr[i].star_mass;
+    legend.children[2].innerHTML = 'Luminosity: ' + timestepsArr[i].log_L;
+    legend.children[3].innerHTML = 'Radius: ' + timestepsArr[i].log_R;
     legend.children[4].innerHTML =
-      "Effective Temp. (K): " + timestepsArr[i].log_Teff;
-    legend.children[5].innerHTML = "Density: " + timestepsArr[i].log_center_Rho;
-    legend.children[6].innerHTML = "Pressure: " + timestepsArr[i].log_center_P;
+      'Effective Temp. (K): ' + timestepsArr[i].log_Teff;
+    legend.children[5].innerHTML = 'Density: ' + timestepsArr[i].log_center_Rho;
+    legend.children[6].innerHTML = 'Pressure: ' + timestepsArr[i].log_center_P;
     legend.children[7].innerHTML =
-      "Fraction Hydrogen: " + timestepsArr[i].center_h1;
+      'Fraction Hydrogen: ' + timestepsArr[i].center_h1;
     i++;
   }, 500);
 }
@@ -49,14 +49,13 @@ var options = {
   childList: true,
 };
 
-let observer = new MutationObserver(luminosityChange);
-
 function luminosityChange() {
-  console.log("dsa");
+  camera.position.z += 5;
+  console.log('hi');
 }
 
-const luminosity = document.getElementById("luminosity");
-
+let observer = new MutationObserver(luminosityChange);
+const luminosity = document.getElementById('luminosity');
 observer.observe(luminosity, options);
 
 //camera
@@ -93,7 +92,7 @@ bloomComposer.addPass(renderScene);
 bloomComposer.addPass(bloomPass);
 
 //sun object
-const color = new THREE.Color("#FDB813"); // change color based on tempurature
+const color = new THREE.Color('#FDB813'); // change color based on tempurature
 const geometry = new THREE.IcosahedronGeometry(1, 15);
 const material = new THREE.MeshBasicMaterial({
   map: loader.load('/2k_sun.jpg'),
