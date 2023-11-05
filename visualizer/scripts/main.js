@@ -15,7 +15,7 @@ const legend = document.getElementById('legend');
 function playEvolution() {
   var i = 0;
   const interval = setInterval(() => {
-    if (!(i <= timestepsArr.length)) {
+    if (i >= timestepsArr.length) {
       clearInterval(interval);
     }
     legend.children[0].innerHTML = 'Age (yr): ' + timestepsArr[i].star_age;
@@ -38,7 +38,7 @@ function playEvolution() {
     // legend.children[7].innerHTML =
     //   '<sup>1</sup>H Mass Fraction: ' + timestepsArr[i].center_h1;
     i++;
-  }, 500);
+  }, 150);
 }
 
 playEvolution();
