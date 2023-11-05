@@ -1,35 +1,39 @@
-import * as THREE from 'three';
-import '../style.css';
+import * as THREE from "three";
+import "../style.css";
 import {
   CSS2DRenderer,
   CSS2DObject,
-} from 'three/examples/jsm/renderers/CSS2DRenderer';
+} from "three/examples/jsm/renderers/CSS2DRenderer";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import json from '../../file.json' assert { type: 'json' };
+import json from "../../file.json" assert { type: "json" };
 
-let timestepsArr = [];
-let length = Object.keys(json.model_number).length;
+const legend = document.getElementById("legend");
 
-for (let i = 0; i < length; i++) {
-  let starTimestep = {};
-  starTimestep.center_h1 = json.center_h1[i];
-  starTimestep.center_he3 = json.center_he3[i];
-  starTimestep.center_he4 = json.center_he4[i];
-  starTimestep.log_L = json.log_L[i];
-  starTimestep.log_R = json.log_R[i];
-  starTimestep.log_Teff = json.log_Teff[i];
-  starTimestep.log_center_P = json.log_center_P[i];
-  starTimestep.log_center_Rho = json.log_center_Rho[i];
-  starTimestep.model_number = json.model_number[i];
-  starTimestep.star_age = json.star_age[i];
-  starTimestep.star_mass = json.star_mass[i];
-  starTimestep.star_mdot = json.star_mdot[i];
-  timestepsArr.push(starTimestep);
+function playEvolution() {
+  var i = 0;
+  const interval = setInterval(() => {
+    if (!(i <= timestepsArr.length - 100)) {
+      clearInterval(interval);
+    }
+    legend.children[0].innerHTML = "Age: " + timestepsArr[i].star_age;
+    legend.children[1].innerHTML = "Solar Mass: " + timestepsArr[i].star_mass;
+    legend.children[2].innerHTML = "Luminosity: " + timestepsArr[i].log_L;
+    legend.children[3].innerHTML = "Radius: " + timestepsArr[i].log_R;
+    legend.children[4].innerHTML =
+      "Effective Temp. (K): " + timestepsArr[i].log_Teff;
+    legend.children[5].innerHTML = "Density: " + timestepsArr[i].log_center_Rho;
+    legend.children[6].innerHTML = "Pressure: " + timestepsArr[i].log_center_P;
+    legend.children[7].innerHTML =
+      "Fraction Hydrogen: " + timestepsArr[i].center_h1;
+    i += 200;
+  }, 500);
 }
-console.log(timestepsArr);
+
+playEvolution();
+
 let scene;
 let camera;
 let renderer;
@@ -128,3 +132,23 @@ const animate = () => {
 const controls = new OrbitControls(camera, renderer.domElement);
 
 animate();
+
+let timestepsArr = [];
+let length = Object.keys(json.model_number).length;
+
+for (let i = 0; i < length; i++) {
+  let starTimestep = {};
+  starTimestep.center_h1 = json.center_h1[i];
+  starTimestep.center_he3 = json.center_he3[i];
+  starTimestep.center_he4 = json.center_he4[i];
+  starTimestep.log_L = json.log_L[i];
+  starTimestep.log_R = json.log_R[i];
+  starTimestep.log_Teff = json.log_Teff[i];
+  starTimestep.log_center_P = json.log_center_P[i];
+  starTimestep.log_center_Rho = json.log_center_Rho[i];
+  starTimestep.model_number = json.model_number[i];
+  starTimestep.star_age = json.star_age[i];
+  starTimestep.star_mass = json.star_mass[i];
+  starTimestep.star_mdot = json.star_mdot[i];
+  timestepsArr.push(starTimestep);
+}
