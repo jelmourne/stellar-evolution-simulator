@@ -14,7 +14,7 @@ let camera;
 let renderer;
 const canvas = document.getElementsByTagName("canvas")[0];
 scene = new THREE.Scene();
-const fov = 60;
+const fov = 55;
 const aspect = window.innerWidth / window.innerHeight;
 const near = 0.1;
 const far = 1000;
@@ -22,7 +22,7 @@ const loader = new THREE.TextureLoader();
 
 //camera
 camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.z = 8;
+camera.position.z = 8; // modifies size of sun
 camera.position.x = 0;
 scene.add(camera);
 
@@ -36,7 +36,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
 renderer.setClearColor(0x000000, 0.0);
 
-//bloom renderer
+// bloom renderer
 const renderScene = new RenderPass(scene, camera);
 const bloomPass = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
@@ -45,7 +45,7 @@ const bloomPass = new UnrealBloomPass(
   0.85
 );
 bloomPass.threshold = 0;
-bloomPass.strength = 0.6; //intensity of glow
+bloomPass.strength = 0.6; // change luminosity
 bloomPass.radius = 0;
 const bloomComposer = new EffectComposer(renderer);
 bloomComposer.setSize(window.innerWidth, window.innerHeight);
@@ -54,7 +54,7 @@ bloomComposer.addPass(renderScene);
 bloomComposer.addPass(bloomPass);
 
 //sun object
-const color = new THREE.Color("#FDB813");
+const color = new THREE.Color("#FDB813"); // change color based on tempurature
 const geometry = new THREE.IcosahedronGeometry(1, 15);
 const material = new THREE.MeshBasicMaterial({
   map: loader.load("/2k_sun.jpg"),
