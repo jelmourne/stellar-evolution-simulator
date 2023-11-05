@@ -5,91 +5,105 @@ import {
   CSS2DObject,
 } from "three/examples/jsm/renderers/CSS2DRenderer";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import {
-  BloomEffect,
-  EffectComposer,
-  EffectPass,
-  RenderPass,
-} from "postprocessing";
-import { getSunTexture } from "./helpers";
+import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  45,
-  window.innerWidth / window.innerHeight,
-  7,
-  40
+let scene;
+let camera;
+let renderer;
+const canvas = document.getElementsByTagName("canvas")[0];
+scene = new THREE.Scene();
+const fov = 60;
+const aspect = window.innerWidth / window.innerHeight;
+const near = 0.1;
+const far = 1000;
+const loader = new THREE.TextureLoader();
+
+//camera
+camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+camera.position.z = 8;
+camera.position.x = 0;
+scene.add(camera);
+
+//default renderer
+renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+  antialias: true,
+});
+renderer.autoClear = false;
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+renderer.setClearColor(0x000000, 0.0);
+
+//bloom renderer
+const renderScene = new RenderPass(scene, camera);
+const bloomPass = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  1.5,
+  0.4,
+  0.85
 );
+bloomPass.threshold = 0;
+bloomPass.strength = 0.6; //intensity of glow
+bloomPass.radius = 0;
+const bloomComposer = new EffectComposer(renderer);
+bloomComposer.setSize(window.innerWidth, window.innerHeight);
+bloomComposer.renderToScreen = true;
+bloomComposer.addPass(renderScene);
+bloomComposer.addPass(bloomPass);
 
-var bgTexture = new THREE.TextureLoader().load("/2k_stars.jpg");
-bgTexture.minFilter = THREE.LinearFilter;
-scene.setClearColor = new THREE.Color(0, 0, 0);
-scene.background = bgTexture;
-
-const geometry = new THREE.SphereGeometry(3, 64, 64);
-const material = getSunTexture();
+//sun object
+const color = new THREE.Color("#FDB813");
+const geometry = new THREE.IcosahedronGeometry(1, 15);
+const material = new THREE.MeshBasicMaterial({
+  map: loader.load("/2k_sun.jpg"),
+  color: color,
+});
 const sphere = new THREE.Mesh(geometry, material);
+sphere.position.set(0, 0, 0);
+sphere.layers.set(1);
 scene.add(sphere);
 
-const light = new THREE.PointLight("#ffffff", 1, 100);
-light.position.set(0, 10, 10);
-scene.add(light);
+// galaxy geometry
+const starGeometry = new THREE.SphereGeometry(80, 64, 64);
 
-camera.position.z = 10;
+// galaxy material
+const starMaterial = new THREE.MeshBasicMaterial({
+  map: loader.load("/galaxy1.png"),
+  side: THREE.BackSide,
+  transparent: true,
+});
 
-// Render scene
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setClearColor(0x000000, 1);
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+// galaxy mesh
+const starMesh = new THREE.Mesh(starGeometry, starMaterial);
+starMesh.layers.set(1);
+scene.add(starMesh);
 
-// Creating renderer to place labels and the legend
-const labelRenderer = new CSS2DRenderer();
-labelRenderer.setSize(window.innerWidth, window.innerHeight);
-labelRenderer.domElement.style.position = "absolute";
-labelRenderer.domElement.style.top = "0px";
-labelRenderer.domElement.style.pointerEvents = "none"; // Ignoring mouse events so orbit controls still work
-document.body.appendChild(labelRenderer.domElement);
+//ambient light
+const ambientlight = new THREE.AmbientLight(0xffffff, 0.1);
+scene.add(ambientlight);
 
-// Animate star
-function animate() {
+//resize listner
+window.addEventListener(
+  "resize",
+  () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    bloomComposer.setSize(window.innerWidth, window.innerHeight);
+  },
+  false
+);
+
+//animation loop
+const animate = () => {
   requestAnimationFrame(animate);
-
-  // Creating renderer to place labels and the legend
-  renderer.render(scene, camera);
-  labelRenderer.render(scene, camera);
-  sphere.rotation.y += 0.002;
-}
-
-// window.addEventListener('resize', () => {
-//   camera.aspect = window.innerWidth / window.innerHeight;
-//   camera.updateProjectionMatrix();
-//   renderer.setSize(window.innerWidth, window.innerHeight);
-//   labelRenderer.setSize(this.window.innerWidth, this.window.innerHeight);
-// });
+  starMesh.rotation.y += 0.0001;
+  camera.layers.set(1);
+  bloomComposer.render();
+  // Orbit controls
+};
+const controls = new OrbitControls(camera, renderer.domElement);
 
 animate();
-
-// Creating HTML element
-const propertiesDiv = document.createElement("div");
-propertiesDiv.style.border = "2px solid #fff";
-propertiesDiv.style.width = "300px;";
-propertiesDiv.style.padding = "20px";
-propertiesDiv.innerHTML = `<ul style="list-style-type:none;color:#fff; padding:0; margin:0; line-height:1.5">
-    <li>Age:</li>
-    <li>Solar Mass:</li>
-    <li>Luminosity:</li>
-    <li>Radius:</li>
-    <li>Effective Temp. (K):</li>
-    <li>Density:</li>
-    <li>Pressure:</li>
-    <li>Fraction Hydrogen:</li>
-  </ul>`;
-
-console.log(propertiesDiv);
-const propertiesBox = new CSS2DObject(propertiesDiv);
-scene.add(propertiesBox);
-propertiesBox.position.set(-6, 0.8, 4);
-
-// Orbit controls
-const controls = new OrbitControls(camera, renderer.domElement);
