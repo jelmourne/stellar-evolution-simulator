@@ -44,10 +44,24 @@ const aspect = window.innerWidth / window.innerHeight;
 const near = 0.1;
 const far = 1000;
 const loader = new THREE.TextureLoader();
+var position = 8;
+var options = {
+  childList: true,
+};
+
+let observer = new MutationObserver(luminosityChange);
+
+function luminosityChange() {
+  console.log("dsa");
+}
+
+const luminosity = document.getElementById("luminosity");
+
+observer.observe(luminosity, options);
 
 //camera
 camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.z = 8; // modifies size of sun
+camera.position.z = position; // modifies size of sun
 camera.position.x = 0;
 scene.add(camera);
 
