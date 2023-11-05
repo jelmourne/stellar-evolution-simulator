@@ -1,5 +1,5 @@
-import * as THREE from "three";
-import "../style.css";
+import * as THREE from 'three';
+import '../style.css';
 import {
   CSS2DRenderer,
   CSS2DObject,
@@ -10,7 +10,7 @@ import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/Rend
 import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import json from "../../file.json" assert { type: "json" };
 
-const legend = document.getElementById("legend");
+const legend = document.getElementById('legend');
 
 function playEvolution() {
   var i = 0;
@@ -18,16 +18,16 @@ function playEvolution() {
     if (!(i <= timestepsArr.length)) {
       clearInterval(interval);
     }
-    legend.children[0].innerHTML = "Age: " + timestepsArr[i].star_age;
-    legend.children[1].innerHTML = "Solar Mass: " + timestepsArr[i].star_mass;
-    legend.children[2].innerHTML = "Luminosity: " + timestepsArr[i].log_L;
-    legend.children[3].innerHTML = "Radius: " + timestepsArr[i].log_R;
+    legend.children[0].innerHTML = 'Age: ' + timestepsArr[i].star_age;
+    legend.children[1].innerHTML = 'Solar Mass: ' + timestepsArr[i].star_mass;
+    legend.children[2].innerHTML = 'Luminosity: ' + timestepsArr[i].log_L;
+    legend.children[3].innerHTML = 'Radius: ' + timestepsArr[i].log_R;
     legend.children[4].innerHTML =
-      "Effective Temp. (K): " + timestepsArr[i].log_Teff;
-    legend.children[5].innerHTML = "Density: " + timestepsArr[i].log_center_Rho;
-    legend.children[6].innerHTML = "Pressure: " + timestepsArr[i].log_center_P;
+      'Effective Temp. (K): ' + timestepsArr[i].log_Teff;
+    legend.children[5].innerHTML = 'Density: ' + timestepsArr[i].log_center_Rho;
+    legend.children[6].innerHTML = 'Pressure: ' + timestepsArr[i].log_center_P;
     legend.children[7].innerHTML =
-      "Fraction Hydrogen: " + timestepsArr[i].center_h1;
+      'Fraction Hydrogen: ' + timestepsArr[i].center_h1;
     i++;
   }, 500);
 }
