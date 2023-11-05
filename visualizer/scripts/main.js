@@ -8,7 +8,6 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import { getSunTexture } from "./helpers";
 
 let scene;
 let camera;
@@ -46,7 +45,7 @@ const bloomPass = new UnrealBloomPass(
   0.85
 );
 bloomPass.threshold = 0;
-bloomPass.strength = 0.4; //intensity of glow
+bloomPass.strength = 0.6; //intensity of glow
 bloomPass.radius = 0;
 const bloomComposer = new EffectComposer(renderer);
 bloomComposer.setSize(window.innerWidth, window.innerHeight);
@@ -58,7 +57,7 @@ bloomComposer.addPass(bloomPass);
 const color = new THREE.Color("#FDB813");
 const geometry = new THREE.IcosahedronGeometry(1, 15);
 const material = new THREE.MeshBasicMaterial({
-  map: getSunTexture(),
+  map: loader.load("/2k_sun.jpg"),
   color: color,
 });
 const sphere = new THREE.Mesh(geometry, material);
@@ -108,38 +107,3 @@ const animate = () => {
 const controls = new OrbitControls(camera, renderer.domElement);
 
 animate();
-
-// window.addEventListener('resize', () => {
-//   camera.aspect = window.innerWidth / window.innerHeight;
-//   camera.updateProjectionMatrix();
-//   renderer.setSize(window.innerWidth, window.innerHeight);
-//   labelRenderer.setSize(this.window.innerWidth, this.window.innerHeight);
-// });
-
-animate();
-
-const labelRenderer = new CSS2DRenderer();
-labelRenderer.setSize(window.innerWidth, window.innerHeight);
-labelRenderer.domElement.style.position = "absolute";
-labelRenderer.domElement.style.top = "0px";
-labelRenderer.domElement.style.pointerEvents = "none"; // Ignoring mouse events so orbit controls still work
-document.body.appendChild(labelRenderer.domElement);
-const propertiesBox = new CSS2DObject(propertiesDiv);
-
-// Creating HTML element
-/*
-const propertiesDiv = document.createElement("div");
-propertiesDiv.style.border = "2px solid #fff";
-propertiesDiv.style.width = "300px;";
-propertiesDiv.style.padding = "20px";
-propertiesDiv.innerHTML = `<ul style="list-style-type:none;color:#fff; padding:0; margin:0; line-height:1.5">
-  <li>Age:</li>
-  <li>Solar Mass:</li>
-  <li>Luminosity:</li>
-  <li>Radius:</li>
-  <li>Effective Temp. (K):</li>
-  <li>Density:</li>
-  <li>Pressure:</li>
-  <li>Fraction Hydrogen:</li>
-  </ul>`;
-*/

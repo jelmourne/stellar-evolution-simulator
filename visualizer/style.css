@@ -5,7 +5,16 @@ body {
 
 #overlay {
   position: absolute;
-  background-color: aquamarine;
+}
+
+ul {
+  border: 1px solid white;
+  list-style-type: none;
+  color: #fff;
+  padding: 10px;
+  margin: 20px;
+  line-height: 1.5;
+  width: 250px;
 }
 
 canvas {
