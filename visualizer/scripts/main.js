@@ -43,8 +43,12 @@ function playEvolution() {
 }
 
 const slider = document.getElementById("slider");
+slider.addEventListener("mousedown", () => {
+  clearInterval(interval);
+});
 slider.addEventListener("change", () => {
   i = slider.value;
+  playEvolution();
 });
 
 const playButton = document.getElementById("togglePlay");
