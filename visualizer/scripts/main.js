@@ -34,6 +34,7 @@ function playEvolution() {
     legend.children[6].innerHTML =
       'Pressure (dyn cm<sup>-2</sup>) (log<sub>10</sub>P<sub>c</sub>): ' +
       timestepsArr[i].log_center_P;
+    legend.children[7].innerHTML = 'Model: ' + timestepsArr[i].model_number;
     // legend.children[7].innerHTML =
     //   '<sup>1</sup>H Mass Fraction: ' + timestepsArr[i].center_h1;
     i++;
@@ -63,12 +64,19 @@ let observer = new MutationObserver(luminosityChange);
 function luminosityChange() {
   let radius = document.getElementById('radius').innerHTML.slice(40);
   let luminosity = document.getElementById('luminosity').innerHTML.slice(44);
+  let model = document.getElementById('model').innerHTML.slice(7);
 
-  if (radius > 2 && luminosity < 3.4) {
+  if (model > 1200 && model < 10000) {
     bloomPass.strength = luminosity / 4;
   } else {
-    bloomPass.strength = luminosity / 3;
-    camera.position.z = 9 / radius;
+    bloomPass.strength = luminosity / 2;
+  }
+  camera.position.z = 9 / radius;
+
+  if (model > 13400) {
+    camera.position.z = 15;
+    material.color = new THREE.Color('#739aff');
+    bloomPass.strength = 2;
   }
 }
 
